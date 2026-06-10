@@ -213,6 +213,7 @@ namespace Dagobert
                     _taskManager.Abort();
                     AutoRetainerIPC.Suppressed(false);
                     RemoveTalkAddonListeners();
+                    Plugin.ChatGui.Print("Pinching cancelled.");
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -285,6 +286,7 @@ namespace Dagobert
                 }
 
                 _taskManager.Enqueue(() => AutoRetainerIPC.Suppressed(false));
+                _taskManager.Enqueue(() => { Plugin.ChatGui.Print("Pinching done."); return true; });
             }
         }
 
@@ -355,6 +357,7 @@ namespace Dagobert
 
             ClearState();
             EnqueueAllRetainerItems(EnqueueSingleItem, false);
+            _taskManager.Enqueue(() => { Plugin.ChatGui.Print("Pinching done."); return true; });
         }
 
         private unsafe bool? EnqueueAllRetainerItems(Action<int> enqueueFunc, bool reverseOrder)
